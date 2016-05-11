@@ -295,7 +295,7 @@
                 } else if (typeof (comparator) !== "function") {
                     comparator = function (v) { return v === value; }
                 }
-                LINQ.methods.apply.any(this, comparator);
+                LINQ.methods.any.apply(this, comparator);
             }
         }
     };
