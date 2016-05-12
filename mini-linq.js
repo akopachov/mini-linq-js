@@ -55,7 +55,7 @@
                     return !predicate.apply(this, arguments);
                 }
 
-                return !LINQ.methods.any.apply(this, oppositePredicate);
+                return !LINQ.methods.any.apply(this, [oppositePredicate]);
             },
 
             where: function (predicate) {
@@ -159,7 +159,7 @@
                     return comparator.apply(this, arguments) * -1;
                 };
 
-                return this.orderBy(selector, oppositeComparator);
+                return LINQ.methods.orderBy.apply(this, [selector, oppositeComparator]);
             },
 
             groupBy: function (keySelector, resultSelector) {
@@ -295,7 +295,7 @@
                 } else if (typeof (comparator) !== "function") {
                     comparator = function (v) { return v === value; }
                 }
-                LINQ.methods.any.apply(this, comparator);
+                LINQ.methods.any.apply(this, [comparator]);
             }
         }
     };
