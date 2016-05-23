@@ -240,7 +240,7 @@
                     predicate = function () { return true; }
                 }
 
-                for (var i = this.length; i >= 0; i--) {
+                for (var i = this.length - 1; i >= 0; i--) {
                     if (predicate(this[i], i, this)) {
                         return this[i];
                     }

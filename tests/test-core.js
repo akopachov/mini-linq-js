@@ -1,5 +1,9 @@
-var test = require('unit.js');
-require('./../mini-linq.js');
+if (typeof(require) !== 'undefined') {
+    require('./../mini-linq.js');
+    var test = require('unit.js');
+} else {
+    var test = unitjs;
+}
 
 var testArray1 = [1, 2, 8, 2, 6, 3, 9, 2, 4];
 
@@ -75,7 +79,6 @@ describe('Methods', function() {
     it('.select', function() {
         test.array(testArray1.select('a => return { x: a, xx: a * a }'))
             .isNotEmpty()
-            //.hasLength(testArray1.length)
             .match(function(arr) {
                 for (var i = 0; i < arr.length; i++) {
                     if (typeof(arr[i]) !== 'object' || arr[i].x !== testArray1[i]) {
@@ -97,5 +100,106 @@ describe('Methods', function() {
             .isNotType('undefined')
             .isNumber()
             .is(testArray1.length);
+    });
+    
+    it('.orderBy', function() {
+        test.array(testArray1.orderBy('o => o'))
+            .isNotEmpty()
+            .match(function(arr) {
+                return arr.length === testArray1.length;
+            })
+            .match(function(arr) {
+                for (var i = 0; i < arr.length - 1; i++) {
+                    if (arr[i] > arr[i + 1]) {
+                        return false;
+                    }
+                    
+                    return true;
+                }
+            });
+    });
+    
+    it('.orderByDescending', function() {
+        test.array(testArray1.orderByDescending('o => o'))
+            .isNotEmpty()
+            .match(function(arr) {
+                return arr.length === testArray1.length;
+            })
+            .match(function(arr) {
+                for (var i = 0; i < arr.length - 1; i++) {
+                    if (arr[i] < arr[i + 1]) {
+                        return false;
+                    }
+                    
+                    return true;
+                }
+            });
+    });
+    
+    it('.distinct', function() {
+        var distinctElements = {};
+        test.array(testArray1.distinct())
+            .match(function(arr) {
+                return arr.length <= testArray1.length;
+            })
+            .matchEach(function(it, key) {
+                if (testArray1.hasOwnProperty(key) && typeof(distinctElements[it]) !== 'undefined') {
+                    return false;
+                }
+
+                return distinctElements[it] = true;
+            });
+    });
+    
+    it('.firstOrDefault', function() {
+        test.value(testArray1.firstOrDefault()).is(testArray1[0]);
+        test.value(testArray1.firstOrDefault('f => f % 2 === 0')).is(2);
+        test.value(testArray1.firstOrDefault('f => f === 999')).isNull();
+    });
+    
+    it('.lastOrDefault', function() {
+        test.value(testArray1.lastOrDefault()).is(testArray1[testArray1.length - 1]);
+        test.value(testArray1.lastOrDefault('f => f % 2 === 0')).is(4);
+        test.value(testArray1.lastOrDefault('f => f === 999')).isNull();
+    });
+    
+    it('.contains', function() {
+        test.value(testArray1.contains(2)).isTrue();
+        test.value(testArray1.contains(999)).isFalse();
+        test.value(testArray1.contains('2')).isFalse(); // === by default is in use.
+        test.value(testArray1.contains('2', '(a, b) => a == b')).isTrue(); // force == to use
+    });
+    
+    it('.groupBy', function() {
+        var distinctElements = {};
+        test.array(testArray1.groupBy('o => o'))
+            .isNotEmpty()
+            .matchEach(function(it, key) {
+                if (testArray1.hasOwnProperty(key) && typeof(distinctElements[it.group]) !== 'undefined') {
+                    return false;
+                }
+
+                return distinctElements[it.group] = true;
+            })
+            .matchEach(function(it, key) {
+                if (testArray1.hasOwnProperty(key)) {
+                    test.array(it.values).isNotEmpty()
+                }
+                
+                return true;
+            });
+    });
+    
+    it('.joinWith', function() {
+        test.array(testArray1.joinWith(testArray1, 'ik => true', 'ok => true', '(i, o) => i'))
+            .isNotEmpty()
+            .match(function(arr) {
+                return arr.length === testArray1.length * testArray1.length;
+            });
+        test.array(testArray1.joinWith([1, 2, 3, 4], 'ik => ik', 'ok => ok', '(i, o) => i'))
+            .isNotEmpty()
+            .match(function(arr) {
+                return arr.length === 6;
+            });
     });
 });
