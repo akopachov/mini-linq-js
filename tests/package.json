@@ -1,0 +1,8 @@
+{
+  "name": "mini-linq-tests",
+  "version": "1.0.0",
+  "devDependencies": {
+    "mocha": "^2.5.0",
+    "unit.js": "^2.0.0"
+  }
+}
