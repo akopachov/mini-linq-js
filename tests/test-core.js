@@ -202,4 +202,27 @@ describe('Methods', function() {
                 return arr.length === 6;
             });
     });
+    
+    it('.aggregate', function() {
+        var testArray = "the quick brown fox jumps over the lazy dog".split(' ');
+        test.value(testArray.aggregate('(workingSentence, next) => next + " " + workingSentence'))
+            .is('dog lazy the over jumps fox brown quick the ');
+            
+        var testArraySumm = 0;
+        for (var i = 0; i < testArray1.length; i++) {
+            testArraySumm += testArray1[i];
+        }
+        test.value(testArray1.aggregate('(c, n) => c + n')).is(testArraySumm);
+    });
+    
+    it('.sum', function() {
+        var testArray = "the quick brown fox jumps over the lazy dog".split(' ');
+        test.value(testArray.sum('s => s + "-"')).is('the-quick-brown-fox-jumps-over-the-lazy-dog-');
+            
+        var testArraySumm = 0;
+        for (var i = 0; i < testArray1.length; i++) {
+            testArraySumm += testArray1[i];
+        }
+        test.value(testArray1.sum('s => s')).is(testArraySumm);
+    });
 });

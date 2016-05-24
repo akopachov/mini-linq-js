@@ -8,7 +8,7 @@
                 }
 
                 if (expression == null || typeof (expression) !== 'string' || expression.indexOf('=>') < 0) {
-                    throw Exception('Expression "' + expression + '" is invalid');
+                    throw new SyntaxError('Expression "' + expression + '" is invalid');
                 }
 
                 if (typeof(expressionCache[expression]) === "function") {
@@ -25,6 +25,46 @@
                 var expressionFn = new Function(args, body);
                 expressionCache[expression] = expressionFn;
                 return expressionFn;
+            },
+            
+            getType: function(obj) {
+                var type = typeof obj;
+
+                if (type !== 'object') return type; // primitive or function
+                if (obj === null) return 'null';    // null
+
+                // Everything else, check for a constructor
+                var ctor = obj.constructor;
+                var name = typeof ctor === 'function' && ctor.name;
+
+                return typeof name === 'string' && name.length > 0 ? name : 'object';
+            },
+            
+            getDefaultValue: function(type) {
+                if (typeof type !== 'string') throw new TypeError('Type must be a string.');
+
+                // Handle simple types (primitives and plain function/object)
+                switch (type) {
+                    case 'boolean'   : return false;
+                    case 'function'  : return function () {};
+                    case 'null'      : return null;
+                    case 'number'    : return 0;
+                    case 'object'    : return {};
+                    case 'string'    : return "";
+                    case 'symbol'    : return Symbol();
+                    case 'undefined' : return void 0;
+                }
+
+                try {
+                    // Look for constructor in this or current scope
+                    var ctor = typeof this[type] === 'function'
+                            ? this[type]
+                            : eval(type);
+
+                    return new ctor;
+
+                // Constructor not found, return new object
+                } catch (e) { return {}; }
             }
         },
         methods: {
@@ -48,7 +88,7 @@
                 if (typeof (predicate) === "string") {
                     predicate = LINQ.utils.parseExpression(predicate);
                 } else if (typeof (predicate) !== "function") {
-                    throw Exception('Predicate is required');
+                    throw new Error('Predicate is required');
                 }
 
                 var oppositePredicate = function () {
@@ -62,7 +102,7 @@
                 if (typeof (predicate) === "string") {
                     predicate = LINQ.utils.parseExpression(predicate);
                 } else if (typeof (predicate) !== "function") {
-                    return this.slice(0);
+                   throw new Error('Predicate is required');
                 }
 
                 if (typeof (Array.prototype.filter) === "function") {
@@ -83,7 +123,7 @@
                 if (typeof (selector) === "string") {
                     selector = LINQ.utils.parseExpression(selector);
                 } else if (typeof (selector) !== "function") {
-                    return this.slice(0);
+                    throw new Error('Selector is required');
                 }
 
                 if (typeof (Array.prototype.map) === "function") {
@@ -166,7 +206,7 @@
                 if (typeof (keySelector) === "string") {
                     keySelector = LINQ.utils.parseExpression(keySelector);
                 } else if (typeof (keySelector) !== "function") {
-                    throw Exception("Key selector is required");
+                    throw new Error("Key selector is required");
                 }
 
                 if (typeof (resultSelector) === "string") {
@@ -253,19 +293,19 @@
                 if (typeof (innerKeySelector) === "string") {
                     innerKeySelector = LINQ.utils.parseExpression(innerKeySelector);
                 } else if (typeof (innerKeySelector) !== "function") {
-                    throw Exception("Inner key selector is required");
+                    throw new Error("Inner key selector is required");
                 }
 
                 if (typeof (outerKeySelector) === "string") {
                     outerKeySelector = LINQ.utils.parseExpression(outerKeySelector);
                 } else if (typeof (outerKeySelector) !== "function") {
-                    throw Exception("Outer key selector is required");
+                    throw new Error("Outer key selector is required");
                 }
 
                 if (typeof (resultSelector) === "string") {
                     resultSelector = LINQ.utils.parseExpression(resultSelector);
                 } else if (typeof (resultSelector) !== "function") {
-                    throw Exception("Results selector is required");
+                    throw new Error("Results selector is required");
                 }
 
                 if (typeof (keyComparator) === "string") {
@@ -297,6 +337,34 @@
                 }
                 
                 return LINQ.methods.any.apply(this, [comparator]);
+            },
+            
+            aggregate: function(aggregator, seed) {
+                if (typeof (aggregator) === "string") {
+                    aggregator = LINQ.utils.parseExpression(aggregator);
+                } else if (typeof (aggregator) !== "function") {
+                    throw new Error("Aggregator function is required");
+                }
+                
+                if (this.length <= 0) return seed;
+                
+                var result = typeof(seed) === 'undefined' ? LINQ.utils.getDefaultValue(LINQ.utils.getType(this[0])) : seed;
+                for (var i = 0, l = this.length; i < l; i++) {
+                    result = aggregator(result, this[i], i, this);
+                }
+                
+                return result;
+            },
+            
+            sum: function(selector, defaultValue) {
+                if (typeof (selector) === "string") {
+                    selector = LINQ.utils.parseExpression(selector);
+                } else if (typeof (selector) !== "function") {
+                    selector = function(s) { return s; }
+                }
+                
+                defaultValue = typeof(defaultValue) === 'undefined' ? LINQ.utils.getDefaultValue(LINQ.utils.getType(selector(this[0], 0, this))) : defaultValue;
+                return LINQ.methods.aggregate.apply(this, [function(sum, next, index, array) { return sum + selector(next, index, array); }, defaultValue]);
             }
         }
     };
@@ -306,6 +374,8 @@
     LINQ.methods.any.finalize = true;
     LINQ.methods.contains.finalize = true;
     LINQ.methods.all.finalize = true;
+    LINQ.methods.aggregate.finalize = true;
+    LINQ.methods.sum.finalize = true;
 
     for (var key in LINQ.methods) {
         if (LINQ.methods.hasOwnProperty(key)) {
