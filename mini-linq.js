@@ -18,11 +18,22 @@
                 var parts = expression.split('=>');
                 var args = parts[0].trim().replace(/[\(\)\s]/gi, '');
                 var body = parts[1].trim();
-                if (!body.startsWith('{') && body.indexOf('return') < 0) {
-                    body = 'return (' + body + ')';
+                var expressionFn;
+
+                try {
+                    if (body.indexOf('return') < 0) {
+                        body = 'return (' + body + ')';
+                    }
+                    
+                    expressionFn = new Function(args, body);
+                } catch(error) {
+                    expressionFn = new Function(args, body);
+                }
+                
+                if (typeof(expressionFn) !== 'function') {
+                    throw new SyntaxError('Expression "' + expression + '" is invalid');
                 }
 
-                var expressionFn = new Function(args, body);
                 expressionCache[expression] = expressionFn;
                 return expressionFn;
             },

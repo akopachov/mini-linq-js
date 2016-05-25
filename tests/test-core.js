@@ -19,14 +19,28 @@ describe('Core', function() {
             });
     });
     
-    it('Expression parser', function() {
+    it('Expression parser - 1', function() {
        var expression = function(x) { return x * x; }
        var expressionParsed = LINQ.utils.parseExpression('x => x * x');
        var testValue = Math.random() * 99;
        test.value(expressionParsed).isFunction();
-       test.function(expressionParsed).match(function (it) {
-           return it(testValue) === expression(testValue);
-       })
+       test.value(expressionParsed(testValue)).is(expression(testValue));
+    });
+    
+    it('Expression parser - 2', function() {
+       var expression = function(x) { return {x: x, xx: x * x}; }
+       var expressionParsed = LINQ.utils.parseExpression('x => {x : x, xx: x * x}');
+       var testValue = Math.random() * 99;
+       test.value(expressionParsed).isFunction();
+       test.object(expressionParsed(testValue)).is(expression(testValue));
+    });
+    
+    it('Expression parser - 3', function() {
+       var expression = function(x) { var y = 1; y++; return x + y; }
+       var expressionParsed = LINQ.utils.parseExpression('x => { var y = 1; y++; return x + y;}');
+       var testValue = Math.random() * 99;
+       test.value(expressionParsed).isFunction();
+       test.value(expressionParsed(testValue)).is(expression(testValue));
     });
     
     it('Attachment to Array', function() {
@@ -77,7 +91,7 @@ describe('Methods', function() {
     });
     
     it('.select', function() {
-        test.array(testArray1.select('a => return { x: a, xx: a * a }'))
+        test.array(testArray1.select('a => { x: a, xx: a * a }'))
             .isNotEmpty()
             .match(function(arr) {
                 for (var i = 0; i < arr.length; i++) {
