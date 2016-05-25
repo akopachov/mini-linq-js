@@ -86,10 +86,14 @@
         
         that.optimize = function() {
             mergeModificators();
+            return that;
         };
 
         that.toArray = function () {
-            that.optimize();
+            if (_array.length > 100 && that._modificatorQueue.length > 2) {
+                that.optimize();
+            }
+            
             applyModificators();
             return Array.isArray(_array) ? _array.slice(0) : _array;
         };

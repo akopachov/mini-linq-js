@@ -21,5 +21,7 @@ Available functions:
 * lastOrDefault
 * joinWith
 * contains
+* aggregate
+* sum
 
-Description will be updated more
+Description will be updated.

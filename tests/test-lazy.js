@@ -18,17 +18,17 @@ describe('Lazy array', function() {
        test.value(val1).is(val2);
    });
    
-   it('Optimizator is working', function() {
+   it('Optimizer is working', function() {
        var result1 = testArray1.where('w => w > 1').where('w => w > 2').where('w => w > 3');
-       var result2 = testArray1.toLazy().where('w => w > 1').where('w => w > 2').where('w => w > 3').toArray();
+       var result2 = testArray1.toLazy().where('w => w > 1').where('w => w > 2').where('w => w > 3').optimize().toArray();
        test.array(result1).is(result2);
        
        var result3 = testArray1.where('w => w > 1').where('w => w < 1').where('w => w > 3');
-       var result4 = testArray1.toLazy().where('w => w > 1').where('w => w < 1').where('w => w > 3').toArray();
+       var result4 = testArray1.toLazy().where('w => w > 1').where('w => w < 1').where('w => w > 3').optimize().toArray();
        test.array(result3).is(result4);
        
        var result5 = testArray1.where(w => w > 1).where('w => w > 2').where(w => w > 3).select(s => s + 1).select('s => s + 5').select(s => s + 1);
-       var result6 = testArray1.toLazy().where('w => w > 1').where(w => w > 2).where(w => w > 3).select(s => s + 1).select('s => s + 5').select(s => s + 1).toArray();
+       var result6 = testArray1.toLazy().where('w => w > 1').where(w => w > 2).where(w => w > 3).select(s => s + 1).select('s => s + 5').select(s => s + 1).optimize().toArray();
        test.array(result5).is(result6);
    });
 });
