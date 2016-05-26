@@ -28,9 +28,9 @@ require('mini-linq.min.js');
 * sum
 
 ## Terms:
-* <a name="predicate">Predicate</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic coditions; `false` otherwise;
-* <a name="selector">Selector</a> - function which accepts arguments (value, index, array) and returns some value which should be used instead of original.
-* <a name="comparator">Comparator</a> - function which accepts two arguments and returns: 1 if first argument is greater then second; -1 if second argument is greater then first; 0 if they are equal.
+* <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic coditions; `false` otherwise;
+* <a name="selector">**Selector**</a> - function which accepts arguments (value, index, array) and returns some value which should be used instead of original.
+* <a name="comparator">**Comparator**</a> - function which accepts two arguments and returns: 1 if first argument is greater then second; -1 if second argument is greater then first; 0 if they are equal.
 
 [predicates](#predicate), [selectors](#selector), [comparators](#comparator) can be written in 3 ways:
 
