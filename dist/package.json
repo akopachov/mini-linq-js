@@ -1,0 +1,9 @@
+{
+  "name": "mini-linq.js",
+  "version": "1.0.0",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-uglify": "^1.0.1",
+    "matchdep": "^1.0.1"
+  }
+}
