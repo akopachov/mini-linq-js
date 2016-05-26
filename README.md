@@ -1,6 +1,8 @@
 # mini-linq-js
+## Description
+LINQ for JavaScript library, which allows to work with arrays in a more easy way and focus on business logic.
 
-### Usage:
+## Usage:
 Just link mini-linq.js or mini-linq.min.js in your html.
 ```html
 <script type="text/javascript" src="mini-linq.min.js"></script>
@@ -20,8 +22,8 @@ require('mini-linq.min.js');
 * [orderByDescending](#orderByDescending)
 * [groupBy](#groupBy)
 * [distinct](#distinct)
-* firstOrDefault
-* lastOrDefault
+* [firstOrDefault](#firstOrDefault)
+* [lastOrDefault](#lastOrDefault)
 * joinWith
 * contains
 * aggregate
@@ -29,25 +31,25 @@ require('mini-linq.min.js');
 
 ## Terms:
 * <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic coditions; `false` otherwise;
-* <a name="selector">**Selector**</a> - function which accepts arguments (value, index, array) and returns some value which should be used instead of original.
-* <a name="comparator">**Comparator**</a> - function which accepts two arguments and returns: 1 if first argument is greater then second; -1 if second argument is greater then first; 0 if they are equal.
+* <a name="selector">**Selector**</a> - function which accepts arguments (value, index, array) and returns some value which should be used instead of original value.
+* <a name="comparator">**Comparator**</a> - function which accepts two arguments and returns: `1` if first argument is greater then second; `-1` if second argument is greater then first; `0` if they are equal.
 
-[predicates](#predicate), [selectors](#selector), [comparators](#comparator) can be written in 3 ways:
+[Predicates](#predicate), [selectors](#selector), [comparators](#comparator) can be written in 3 ways:
 
 1. usual way: `function(arg) { return arg * 2; }`;
-2. modern ([by using arrow functions](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions)): `arg => arg * 2`;
-3. modern with obsolete browsers support: `'arg => arg * 2'`. It's almost the same as p.2, just wrapped as a string.
+2. modern way ([by using arrow functions](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions)): `arg => arg * 2`;
+3. modern way with obsolete browsers support: `'arg => arg * 2'`. It's almost the same as in p.2, just wrapped as a string. _mini-linq_ core will parse this string and generated appropriate function.
 
 
 ## Methods description:
 
 ### <a name="any">.any</a>
 ###### Description:
-`.any` check if there is at least one element in array which match [predicate](#predicate). If called without [predicate](#predicate) then it check for any element in the array.
+`.any` check if there is at least one element in array which matches [predicate](#predicate). If called without [predicate](#predicate) then it check for any element in the array.
 ###### Arguments:
 `.any` accepts [predicate](#predicate) or nothing.
 ###### Returns:
-`true` if there is at least one element which match specified [predicate](#predicate); `false` otherwise.
+`true` if there is at least one element which matches specified [predicate](#predicate); `false` otherwise.
 ###### Example of usage:
 ```javascript
 [1, 2, 3].any(); // will return true, because predicate is not passed and array is not empty
@@ -63,7 +65,7 @@ require('mini-linq.min.js');
 ###### Arguments:
 `.all` accepts [predicate](#predicate).
 ###### Returns:
-`true` if all elements matches specified [predicate](#predicate); `false` otherwise.
+`true` if all elements match specified [predicate](#predicate); `false` otherwise.
 ###### Example of usage:
 ```javascript
 [1, 2, 3].all(a => a > 0); // will return true because all elements matches predicate a > 0
@@ -87,7 +89,7 @@ Array of elements which matches [predicate](#predicate). Or empty array if there
 
 ### <a name="select">.select</a>
 ###### Description:
-`.select` produce new array by applying [selector](#selector) for each element.
+`.select` produces new array by applying [selector](#selector) for each element.
 ###### Arguments:
 `.select` accepts [selector](#selector).
 ###### Returns:
@@ -166,5 +168,37 @@ Array of distinct elements.
 ```javascript
 [2, 1, 2, 3, 1, 6, 7, 3, 2].distinct(); // will return [2, 1, 3, 6, 7]
 [2, 1, 2, 3, 1, 6, 7, 3, 2].distinct(d => d % 3) // will return [2, 1, 3]
+```
+---
+
+### <a name="firstOrDefault">.firstOrDefault</a>
+###### Description:
+`.firstOrDefault` selects first element which matches [predicate](#predicate) if there is not such element, then `null` will be returned. If predicate is not specified then first element will be returned or `null` if array is empty.
+###### Arguments:
+`.firstOrDefault` may accept [predicate](#predicate).
+###### Returns:
+First element which matches [predicate](#predicate) or `null` if there is no such element. If predicate is not specified then first element will be returned or `null` if array is empty.
+###### Example of usage:
+```javascript
+[2, 1, 2, 3, 1, 6, 7, 3, 2].firstOrDefault(f => f % 2 == 1); // will return 1
+[2, 1, 2, 3, 1, 6, 7, 3, 2].firstOrDefault() // will return 2
+[2, 1, 2, 3, 1, 6, 7, 3, 2].firstOrDefault(f => f < 0) // will return null
+[].firstOrDefault() // will return null
+```
+---
+
+### <a name="lastOrDefault">.lastOrDefault</a>
+###### Description:
+`.lastOrDefault` selects last element which matches [predicate](#predicate) if there is not such element, then `null` will be returned. If predicate is not specified then last element will be returned or `null` if array is empty.
+###### Arguments:
+`.lastOrDefault` may accept [predicate](#predicate).
+###### Returns:
+Last element which matches [predicate](#predicate) or `null` if there is no such element. If predicate is not specified then last element will be returned or `null` if array is empty.
+###### Example of usage:
+```javascript
+[2, 1, 2, 3, 1, 6, 7, 3, 2].lastOrDefault(f => f % 2 == 1); // will return 3
+[2, 1, 2, 3, 1, 6, 7, 3, 9].lastOrDefault() // will return 9
+[2, 1, 2, 3, 1, 6, 7, 3, 2].lastOrDefault(f => f < 0) // will return null
+[].lastOrDefault() // will return null
 ```
 ---
