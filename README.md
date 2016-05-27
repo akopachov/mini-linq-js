@@ -1,4 +1,4 @@
-# mini-linq-js
+# mini-linq.js
 ## Description
 LINQ for JavaScript library, which allows to work with arrays in a more easy way and focus on business logic.
 
