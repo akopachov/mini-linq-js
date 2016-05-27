@@ -215,6 +215,7 @@ Last element which matches [predicate](#predicate) or `null` if there is no such
 3. outer key [selector](#selector) which will be applied to outer array;
 4. result [selector](#selector) which should accept two arguments (inner element and outer element) and return result element;
 5. key [comparator](#comparator) which implements comparation logic between inner key and outer key. (optional)
+
 ###### Returns:
 Array of combined elements.
 ###### Example of usage:
