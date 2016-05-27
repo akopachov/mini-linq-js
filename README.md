@@ -209,6 +209,7 @@ Last element which matches [predicate](#predicate) or `null` if there is no such
 `.joinWith` combines two arrays based upon the [inner key selector](#selector) and [outer key selector](#selector).
 ###### Arguments:
 `.joinWith` accepts following arguments (1-4 are mandatory, 5th is optional):
+
 1. inner array to join with;
 2. inner key [selector](#selector) which will be applied to inner array;
 3. outer key [selector](#selector) which will be applied to outer array;
