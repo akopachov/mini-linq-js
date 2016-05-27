@@ -1,5 +1,5 @@
 if (typeof(require) !== 'undefined') {
-    require('./../mini-linq.js');
+    require('../src/mini-linq.js');
     var test = require('unit.js');
 } else {
     var test = unitjs;
