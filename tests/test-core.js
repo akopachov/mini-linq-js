@@ -182,6 +182,7 @@ describe('Methods', function() {
         test.value(testArray1.contains(999)).isFalse();
         test.value(testArray1.contains('2')).isFalse(); // === by default is in use.
         test.value(testArray1.contains('2', '(a, b) => a == b')).isTrue(); // force == to use
+        test.value([1, 2, 3, 4].contains('2', (a, b) => a == b)).isTrue();
     });
     
     it('.groupBy', function() {

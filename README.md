@@ -24,15 +24,16 @@ require('mini-linq.min.js');
 * [distinct](#distinct)
 * [firstOrDefault](#firstOrDefault)
 * [lastOrDefault](#lastOrDefault)
-* joinWith
-* contains
-* aggregate
-* sum
+* [joinWith](#joinWith)
+* [contains](#contains)
+* [aggregate](#aggregate)
+* [sum](#sum)
 
 ## Terms:
 * <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic coditions; `false` otherwise;
 * <a name="selector">**Selector**</a> - function which accepts arguments (value, index, array) and returns some value which should be used instead of original value.
-* <a name="comparator">**Comparator**</a> - function which accepts two arguments and returns: `1` if first argument is greater then second; `-1` if second argument is greater then first; `0` if they are equal.
+* <a name="comparator">**Comparator**</a> - function which accepts two arguments and returns `true` if two arguments are equal and `false` otherwise.
+* <a name="orderComparator">**Order comparator**</a> - function which accepts two arguments and returns: `1` if first argument is greater then second; `-1` if second argument is greater then first; `0` if they are equal.
 
 [Predicates](#predicate), [selectors](#selector), [comparators](#comparator) can be written in 3 ways:
 
@@ -117,9 +118,9 @@ Count of element which matches specified [predicate](#predicate). Or total count
 
 ### <a name="orderBy">.orderBy</a>
 ###### Description:
-`.orderBy` orders elements in ascending order by using [selector](#selector) and [comparator](#comparator) (if specified).
+`.orderBy` orders elements in ascending order by using [selector](#selector) and [order comparator](#orderComparator) (if specified).
 ###### Arguments:
-`.orderBy` accepts [selector](#selector) as first argument and may accept [comparator](#comparator) as a second.
+`.orderBy` accepts [selector](#selector) as first argument and may accept [order comparator](#orderComparator) as a second.
 ###### Returns:
 Array of ordered elements.
 ###### Example of usage:
@@ -131,9 +132,9 @@ Array of ordered elements.
 
 ### <a name="orderByDescending">.orderByDescending</a>
 ###### Description:
-`.orderByDescending` orders elements in descending order by using [selector](#selector) and [comparator](#comparator) (if specified).
+`.orderByDescending` orders elements in descending order by using [selector](#selector) and [order comparator](#orderComparator) (if specified).
 ###### Arguments:
-`.orderByDescending` accepts [selector](#selector) as first argument and may accept [comparator](#comparator) as a second.
+`.orderByDescending` accepts [selector](#selector) as first argument and may accept [order comparator](#orderComparator) as a second.
 ###### Returns:
 Array of ordered elements.
 ###### Example of usage:
@@ -200,5 +201,73 @@ Last element which matches [predicate](#predicate) or `null` if there is no such
 [2, 1, 2, 3, 1, 6, 7, 3, 9].lastOrDefault() // will return 9
 [2, 1, 2, 3, 1, 6, 7, 3, 2].lastOrDefault(f => f < 0) // will return null
 [].lastOrDefault() // will return null
+```
+---
+
+### <a name="joinWith">.joinWith</a>
+###### Description:
+`.joinWith` combines two arrays based upon the [inner key selector](#selector) and [outer key selector](#selector).
+###### Arguments:
+`.joinWith` accepts following arguments (1-4 are mandatory, 5th is optional):
+1. inner array to join with;
+2. inner key [selector](#selector) which will be applied to inner array;
+3. outer key [selector](#selector) which will be applied to outer array;
+4. result [selector](#selector) which should accept two arguments (inner element and outer element) and return result element;
+5. key [comparator](#comparator) which implements comparation logic between inner key and outer key. (optional)
+###### Returns:
+Array of combined elements.
+###### Example of usage:
+```javascript
+[1, 2, 8, 2, 6, 3, 9, 2, 4].joinWith([1, 2, 3, 4], 'ik => ik', 'ok => ok', '(i, o) => i'); // will return [1, 2, 2, 3, 2, 4]
+[1, 2, 3].joinWith([4, 5, 6], ik => true, ok => true, (i, o) => '' + i + o); // will return ["41", "51", "61", "42", "52", "62", "43", "53", "63"]
+[1, 2, 3].joinWith([1, 2, 3], ik => ik + 1, ok => ok, (i, o) => i); // will return [1, 2]
+[1, 2, 3].joinWith([4, 5, 6], ik => ik, ok => ok, (i, o) => i) // will return []
+```
+---
+
+### <a name="contains">.contains</a>
+###### Description:
+`.contains` check if passed value presents in array.
+###### Arguments:
+`.contains` accepts value and may accept [comparator](#comparator) as a second argument. If [comparator](#comparator) is not passed then `(a, b) => a === b` [comparator](#comparator) will be used by default.
+###### Returns:
+`true` if value presents in array; `false` otherwise.
+###### Example of usage:
+```javascript
+[1, 2, 3, 4].contains(3); // will return true
+[1, 2, 3, 4].contains(5); // will return false
+[1, 2, 3, 4].contains('2'); // will return false, comparator is not passed, so === equality has been used.
+[1, 2, 3, 4].contains('2', (a, b) => a == b); // will return true
+```
+---
+
+### <a name="aggregate">.aggregate</a>
+###### Description:
+`.aggregate` applies an accumulator function over a sequence. It acts the same as [`.reduce`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce).
+###### Arguments:
+`.aggregate` accepts accumulator function, which should accept two arguments: previous result and current element. Also may accept initial value as a second argument.
+###### Returns:
+Aggregated result.
+###### Example of usage:
+```javascript
+[1, 2, 3, 4].aggregate((c, n) => c + n); // will return 10
+[1, 2, 3, 4].aggregate((c, n) => c + n, 10); // will return 20 (because initial value is passed)
+[].aggregate((c, n) => c + n); // will return undefined
+[].aggregate((c, n) => c + n, 0); // will return 0
+```
+---
+
+### <a name="sum">.sum</a>
+###### Description:
+`.sum` calculate total sum of elements using [selector](#selector) if specified.
+###### Arguments:
+`.sum` may accept [selector](#selector).
+###### Returns:
+Total sum.
+###### Example of usage:
+```javascript
+[1, 2, 3, 4].sum(); // will return 10
+[1, 2, 3, 4].sum(s => s); // will return 10
+[1, 2, 3, 4].sum(s => s * 10); // will return 100
 ```
 ---

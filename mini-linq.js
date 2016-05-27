@@ -363,14 +363,17 @@ SOFTWARE.
             },
 
             contains: function (value, comparator) {
+                var anyComparator;
                 if (typeof (comparator) === "string") {
                     var comparatorFn = LINQ.utils.parseExpression(comparator);
-                    comparator = function (v) { return comparatorFn(v, value); };
+                    anyComparator = function (v) { return comparatorFn(v, value); };
                 } else if (typeof (comparator) !== "function") {
-                    comparator = function (v) { return v === value; }
+                    anyComparator = function (v) { return v === value; }
+                } else {
+                    anyComparator = function (v) { return comparator(v, value); };
                 }
                 
-                return LINQ.methods.any.apply(this, [comparator]);
+                return LINQ.methods.any.apply(this, [anyComparator]);
             },
             
             aggregate: function(aggregator, seed) {
@@ -383,6 +386,10 @@ SOFTWARE.
                 if (this.length <= 0) return seed;
                 
                 var result = typeof(seed) === 'undefined' ? LINQ.utils.getDefaultValue(LINQ.utils.getType(this[0])) : seed;
+                if (typeof(Array.prototype.reduce) === 'function') {
+                    return this.reduce(aggregator, result);
+                }
+                
                 for (var i = 0, l = this.length; i < l; i++) {
                     result = aggregator(result, this[i], i, this);
                 }
