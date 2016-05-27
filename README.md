@@ -59,7 +59,7 @@ require('mini-linq.min.js');
 ```javascript
 [1, 2, 3].any(); // will return true, because predicate is not passed and array is not empty
 [1, 2, 3].any(a => a > 2); // will return true because there is at least one element which match predicate a > 2
-[1, 2, 3].any(a => a < 0); // will return false. There is no elements which match predicate a < 0
+[1, 2, 3].any(a => a < 0); // will return false. There are no elements which match predicate a < 0
 [].any(); // will return false. Array is empty.
 ```
 ---
