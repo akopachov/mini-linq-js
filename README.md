@@ -48,7 +48,7 @@ require('mini-linq.min.js');
 
 ### <a name="any">.any</a>
 ###### Description:
-`.any` check if there is at least one element in array which matches [predicate](#predicate). If called without [predicate](#predicate) then it check for any element in the array.
+`.any` checks if there is at least one element in array which matches [predicate](#predicate). If called without [predicate](#predicate) then it checks for any element in the array.
 ###### Arguments:
 `.any` accepts [predicate](#predicate) or nothing.
 ###### Returns:
@@ -64,7 +64,7 @@ require('mini-linq.min.js');
 
 ### <a name="all">.all</a>
 ###### Description:
-`.all` check if all elements in array matches [predicate](#predicate).
+`.all` checks if all elements in array match [predicate](#predicate).
 ###### Arguments:
 `.all` accepts [predicate](#predicate).
 ###### Returns:
@@ -78,11 +78,11 @@ require('mini-linq.min.js');
 
 ### <a name="where">.where</a>
 ###### Description:
-`.where` selects all elements which matches [predicate](#predicate).
+`.where` selects all elements which match [predicate](#predicate).
 ###### Arguments:
 `.where` accepts [predicate](#predicate).
 ###### Returns:
-Array of elements which matches [predicate](#predicate). Or empty array if there are no such elements.
+Array of elements which match [predicate](#predicate). Or empty array if there are no such elements.
 ###### Example of usage:
 ```javascript
 [1, 2, 3, 4].where(a => a > 2); // will return [3, 4]
@@ -106,11 +106,11 @@ Array of elements produced by applying [selector](#selector). Or empty array if 
 
 ### <a name="count">.count</a>
 ###### Description:
-`.count` calculate count of elements which matches [predicate](#predicate). If called without [predicate](#predicate) then it will return total count of elements.
+`.count` calculates count of elements which match [predicate](#predicate). If called without [predicate](#predicate) then it will return total count of elements.
 ###### Arguments:
 `.count` accepts [predicate](#predicate) or nothing.
 ###### Returns:
-Count of element which matches specified [predicate](#predicate). Or total count of elements if [predicate](#predicate) is not specified.
+Count of elements which match specified [predicate](#predicate). Or total count of elements if [predicate](#predicate) is not specified.
 ###### Example of usage:
 ```javascript
 [1, 2, 3, 4].count(s => c > 2); // will return 2
@@ -120,9 +120,9 @@ Count of element which matches specified [predicate](#predicate). Or total count
 
 ### <a name="orderBy">.orderBy</a>
 ###### Description:
-`.orderBy` orders elements in ascending order by using [selector](#selector) and [order comparator](#orderComparator) (if specified).
+`.orderBy` order elements in ascending order by using [selector](#selector) and [order comparator](#orderComparator) (if specified).
 ###### Arguments:
-`.orderBy` accepts [selector](#selector) as first argument and may accept [order comparator](#orderComparator) as a second.
+`.orderBy` accepts [selector](#selector) as first argument and may accept [order comparator](#orderComparator) as a second argument.
 ###### Returns:
 Array of ordered elements.
 ###### Example of usage:
@@ -134,9 +134,9 @@ Array of ordered elements.
 
 ### <a name="orderByDescending">.orderByDescending</a>
 ###### Description:
-`.orderByDescending` orders elements in descending order by using [selector](#selector) and [order comparator](#orderComparator) (if specified).
+`.orderByDescending` order elements in descending order by using [selector](#selector) and [order comparator](#orderComparator) (if specified).
 ###### Arguments:
-`.orderByDescending` accepts [selector](#selector) as first argument and may accept [order comparator](#orderComparator) as a second.
+`.orderByDescending` accepts [selector](#selector) as first argument and may accept [order comparator](#orderComparator) as a second argument.
 ###### Returns:
 Array of ordered elements.
 ###### Example of usage:
@@ -148,7 +148,7 @@ Array of ordered elements.
 
 ### <a name="groupBy">.groupBy</a>
 ###### Description:
-`.groupBy` groups elements by specified [selector](#selector) as a key.
+`.groupBy` group elements by specified [selector](#selector) as a key.
 ###### Arguments:
 `.groupBy` accepts [selector](#selector) as first argument and may accept result [selector](#selector) as a second argument. If result [selector](#selector) is not specified then `(group, values) => { group: group, values: values }` selector will be used.
 ###### Returns:
@@ -210,11 +210,11 @@ Last element which matches [predicate](#predicate) or `null` if there is no such
 ###### Description:
 `.joinWith` combines two arrays based upon the [inner key selector](#selector) and [outer key selector](#selector).
 ###### Arguments:
-`.joinWith` accepts following arguments (1-4 are mandatory, 5th is optional):
+`.joinWith` accepts following arguments (1-4 are mandatory, 5-th is optional):
 
 1. inner array to join with;
-2. inner key [selector](#selector) which will be applied to inner array;
-3. outer key [selector](#selector) which will be applied to outer array;
+2. inner key [selector](#selector) which will be applied to inner array elements;
+3. outer key [selector](#selector) which will be applied to outer array elements;
 4. result [selector](#selector) which should accept two arguments (inner element and outer element) and return result element;
 5. key [comparator](#comparator) which implements comparation logic between inner key and outer key. (optional)
 
@@ -231,7 +231,7 @@ Array of combined elements.
 
 ### <a name="contains">.contains</a>
 ###### Description:
-`.contains` check if passed value presents in array.
+`.contains` checks if passed value presents in array.
 ###### Arguments:
 `.contains` accepts value and may accept [comparator](#comparator) as a second argument. If [comparator](#comparator) is not passed then `(a, b) => a === b` [comparator](#comparator) will be used by default.
 ###### Returns:
@@ -247,7 +247,7 @@ Array of combined elements.
 
 ### <a name="aggregate">.aggregate</a>
 ###### Description:
-`.aggregate` applies an accumulator function over a sequence. It acts the same as [`.reduce`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce).
+`.aggregate` applies an accumulator function over a sequence. It acts the same as [`Array.prototype.reduce`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce).
 ###### Arguments:
 `.aggregate` accepts accumulator function, which should accept two arguments: previous result and current element. Also may accept initial value as a second argument.
 ###### Returns:
@@ -263,7 +263,7 @@ Aggregated result.
 
 ### <a name="sum">.sum</a>
 ###### Description:
-`.sum` calculate total sum of elements using [selector](#selector) if specified.
+`.sum` calculates total sum of elements using [selector](#selector) if specified.
 ###### Arguments:
 `.sum` may accept [selector](#selector).
 ###### Returns:
