@@ -32,7 +32,7 @@ require('mini-linq.min.js');
 * [max](#max)
 
 ## Terms:
-* <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic coditions; `false` otherwise;
+* <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic conditions; `false` otherwise;
 * <a name="selector">**Selector**</a> - function which accepts arguments (value, index, array) and returns some value which should be used instead of original value.
 * <a name="comparator">**Comparator**</a> - function which accepts two arguments and returns `true` if two arguments are equal and `false` otherwise.
 * <a name="orderComparator">**Order comparator**</a> - function which accepts two arguments and returns: `1` if first argument is greater then second; `-1` if second argument is greater then first; `0` if they are equal.
@@ -211,11 +211,13 @@ Last element which matches [predicate](#predicate) or `null` if there is no such
 `.joinWith` combines two arrays based upon the [inner key selector](#selector) and [outer key selector](#selector).
 ###### Arguments:
 `.joinWith` accepts following arguments (1-4 are mandatory, 5th is optional):
+
 1. inner array to join with;
 2. inner key [selector](#selector) which will be applied to inner array;
 3. outer key [selector](#selector) which will be applied to outer array;
 4. result [selector](#selector) which should accept two arguments (inner element and outer element) and return result element;
 5. key [comparator](#comparator) which implements comparation logic between inner key and outer key. (optional)
+
 ###### Returns:
 Array of combined elements.
 ###### Example of usage:
