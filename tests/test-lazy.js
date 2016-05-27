@@ -30,5 +30,11 @@ describe('Lazy array', function() {
        var result5 = testArray1.where(w => w > 1).where('w => w > 2').where(w => w > 3).select(s => s + 1).select('s => s + 5').select(s => s + 1);
        var result6 = testArray1.toLazy().where('w => w > 1').where(w => w > 2).where(w => w > 3).select(s => s + 1).select('s => s + 5').select(s => s + 1).optimize().toArray();
        test.array(result5).is(result6);
+       
+       test.array(testArray1.toLazy().orderBy('o => o').orderBy().orderByDescending().optimize().toArray()).is(testArray1.orderByDescending());
+
+       test.array(testArray1.toLazy().skip(2).take(3).optimize().toArray()).is(testArray1.skip(2).take(3));
+       test.array(testArray1.toLazy().skip(0).take(99).optimize().toArray()).is(testArray1.skip(0).take(99));
+       test.array(testArray1.toLazy().skip(99).take(99).optimize().toArray()).is(testArray1.skip(99).take(99));
    });
 });

@@ -66,6 +66,22 @@ SOFTWARE.
             }
             
             return false;
+        },
+        
+        function(current, next) {
+            if (current.name == 'skip' && next.name == 'take') {
+                return (function(skipCnt, takeCnt) { 
+                    return {
+                        name: 'skiptake',
+                        args: [skipCnt, takeCnt],
+                        fn: function(skip, take) {
+                            return this.slice(skip, skip + take);
+                        }
+                    }
+                })(current.args[0], next.args[0]);
+            }
+            
+            return false;
         }
     ];
     

@@ -197,7 +197,7 @@ SOFTWARE.
                 if (typeof (selector) === "string") {
                     selector = LINQ.utils.parseExpression(selector);
                 } else if (typeof (selector) !== "function") {
-                    return this.slice(0).sort();
+                    selector = function(s) { return s; };
                 }
 
                 if (typeof (comparator) === "string") {
@@ -434,6 +434,22 @@ SOFTWARE.
                 return LINQ.methods.aggregate.apply(this, [
                     function(max, next, index, array) { var nextVal = selector(next, index, array); return max < nextVal ? nextVal : max; }, 
                     selector(this[0], 0, this)]);
+            },
+            
+            skip: function(count) {
+                if (typeof(count) !== 'number' || count < 0) {
+                    throw new TypeError("Count is required and should be a positive number");
+                }
+                
+                return this.slice(count, this.length);
+            },
+            
+            take: function(count) {
+                if (typeof(count) !== 'number' || count < 0) {
+                    throw new TypeError("Count is required and should be a positive number");
+                }
+                
+                return this.slice(0, count);
             }
         }
     };

@@ -30,6 +30,8 @@ require('mini-linq.min.js');
 * [sum](#sum)
 * [min](#min)
 * [max](#max)
+* [skip](#skip)
+* [take](#take)
 
 ## Terms:
 * <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic conditions; `false` otherwise;
@@ -303,5 +305,35 @@ Maximum value. Or `undefined` if array is empty.
 "the quick brown fox jumps over the lazy dog".split(' ').max('s => s.length'); // will return 5
 [].max(); // will return undefined
 [9, 5, 1, 9, 3, 5, 6].max(); // will return 9
+```
+---
+
+### <a name="skip">.skip</a>
+###### Description:
+`.skip` skips specified amount of elements.
+###### Arguments:
+`.skip` accepts number of elements to skip.
+###### Returns:
+Array of elements after skipped elements.
+###### Example of usage:
+```javascript
+[1, 2, 3, 4].skip(2); // will return [3, 4]
+[1, 2, 3, 4].skip(0); // will return [1, 2, 3, 4]
+[1, 2, 3, 4].skip(9); // will return []
+```
+---
+
+### <a name="take">.take</a>
+###### Description:
+`.take` takes specified amount of elements.
+###### Arguments:
+`.take` accepts number of elements to take.
+###### Returns:
+Array of taken elements.
+###### Example of usage:
+```javascript
+[1, 2, 3, 4].take(2); // will return [1, 2]
+[1, 2, 3, 4].take(0); // will return []
+[1, 2, 3, 4].take(9); // will return [1, 2, 3, 4]
 ```
 ---

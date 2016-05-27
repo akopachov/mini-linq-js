@@ -254,4 +254,16 @@ describe('Methods', function() {
         test.value([].max()).isUndefined();
         test.value([9, 5, 1, 9, 3, 5, 6].max()).is(9);
     });
+    
+    it('.skip', function() {
+        test.array([1, 2, 3, 4].skip(2)).is([3, 4]);
+        test.array([1, 2, 3, 4].skip(0)).is([1, 2, 3, 4]);
+        test.array([1, 2, 3, 4].skip(9)).is([]);
+    });
+    
+    it('.take', function() {
+        test.array([1, 2, 3, 4].take(2)).is([1, 2]);
+        test.array([1, 2, 3, 4].take(0)).is([]);
+        test.array([1, 2, 3, 4].take(9)).is([1, 2, 3, 4]);
+    });
 });
