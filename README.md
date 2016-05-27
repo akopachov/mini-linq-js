@@ -41,7 +41,7 @@ require('mini-linq.min.js');
 
 1. usual way: `function(arg) { return arg * 2; }`;
 2. modern way ([by using arrow functions](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions)): `arg => arg * 2`;
-3. modern way with obsolete browsers support: `'arg => arg * 2'`. It's almost the same as in p.2, just wrapped as a string. _mini-linq_ core will parse this string and generated appropriate function.
+3. modern way with obsolete browsers support: `'arg => arg * 2'`. It's almost the same as in p.2, just wrapped as a string. _mini-linq_ core will parse this string and generated appropriate function. _**Important!** It's not possible to use closure variables using this way._
 
 
 ## Methods description:
