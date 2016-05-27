@@ -28,6 +28,8 @@ require('mini-linq.min.js');
 * [contains](#contains)
 * [aggregate](#aggregate)
 * [sum](#sum)
+* [min](#min)
+* [max](#max)
 
 ## Terms:
 * <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic coditions; `false` otherwise;
@@ -269,5 +271,35 @@ Total sum.
 [1, 2, 3, 4].sum(); // will return 10
 [1, 2, 3, 4].sum(s => s); // will return 10
 [1, 2, 3, 4].sum(s => s * 10); // will return 100
+```
+---
+
+### <a name="min">.min</a>
+###### Description:
+`.min` finds minimum value using [selector](#selector) if specified.
+###### Arguments:
+`.min` may accept [selector](#selector).
+###### Returns:
+Minimum value. Or `undefined` if array is empty.
+###### Example of usage:
+```javascript
+"the quick brown fox jumps over the lazy dog".split(' ').min('s => s.length'); // will return 3
+[].min(); // will return undefined
+[9, 5, 1, 9, 3, 5, 6].min(); // will return 1
+```
+---
+
+### <a name="max">.max</a>
+###### Description:
+`.max` finds maximum value using [selector](#selector) if specified.
+###### Arguments:
+`.max` may accept [selector](#selector).
+###### Returns:
+Maximum value. Or `undefined` if array is empty.
+###### Example of usage:
+```javascript
+"the quick brown fox jumps over the lazy dog".split(' ').max('s => s.length'); // will return 5
+[].max(); // will return undefined
+[9, 5, 1, 9, 3, 5, 6].max(); // will return 9
 ```
 ---

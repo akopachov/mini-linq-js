@@ -240,4 +240,18 @@ describe('Methods', function() {
         }
         test.value(testArray1.sum('s => s')).is(testArraySumm);
     });
+    
+    it('.min', function() {
+        var testArray = "the quick brown fox jumps over the lazy dog".split(' ');
+        test.value(testArray.min('s => s.length')).is(3);
+        test.value([].min()).isUndefined();
+        test.value([9, 5, 1, 9, 3, 5, 6].min()).is(1);
+    });
+    
+    it('.max', function() {
+        var testArray = "the quick brown fox jumps over the lazy dog".split(' ');
+        test.value(testArray.max('s => s.length')).is(5);
+        test.value([].max()).isUndefined();
+        test.value([9, 5, 1, 9, 3, 5, 6].max()).is(9);
+    });
 });

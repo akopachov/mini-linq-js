@@ -406,6 +406,34 @@ SOFTWARE.
                 
                 defaultValue = typeof(defaultValue) === 'undefined' ? LINQ.utils.getDefaultValue(LINQ.utils.getType(selector(this[0], 0, this))) : defaultValue;
                 return LINQ.methods.aggregate.apply(this, [function(sum, next, index, array) { return sum + selector(next, index, array); }, defaultValue]);
+            },
+            
+            min: function(selector) {
+                if (typeof (selector) === "string") {
+                    selector = LINQ.utils.parseExpression(selector);
+                } else if (typeof (selector) !== "function") {
+                    selector = function(s) { return s; }
+                }
+                
+                if (this.length <= 0) return void(0);
+                
+                return LINQ.methods.aggregate.apply(this, [
+                    function(min, next, index, array) { var nextVal = selector(next, index, array); return min > nextVal ? nextVal : min; }, 
+                    selector(this[0], 0, this)]);
+            },
+            
+            max: function(selector) {
+                if (typeof (selector) === "string") {
+                    selector = LINQ.utils.parseExpression(selector);
+                } else if (typeof (selector) !== "function") {
+                    selector = function(s) { return s; }
+                }
+                
+                if (this.length <= 0) return void(0);
+                
+                return LINQ.methods.aggregate.apply(this, [
+                    function(max, next, index, array) { var nextVal = selector(next, index, array); return max < nextVal ? nextVal : max; }, 
+                    selector(this[0], 0, this)]);
             }
         }
     };
@@ -417,6 +445,8 @@ SOFTWARE.
     LINQ.methods.all.finalize = true;
     LINQ.methods.aggregate.finalize = true;
     LINQ.methods.sum.finalize = true;
+    LINQ.methods.min.finalize = true;
+    LINQ.methods.max.finalize = true;
 
     for (var key in LINQ.methods) {
         if (LINQ.methods.hasOwnProperty(key)) {
