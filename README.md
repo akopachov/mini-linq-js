@@ -3,7 +3,7 @@
 LINQ for JavaScript library, which allows to work with arrays in a more easy way and focus on business logic.
 
 ## Usage
-Just link mini-linq.js or mini-linq.min.js in your html.
+Just link `mini-linq.js` or `mini-linq.min.js` in your html.
 ```html
 <script type="text/javascript" src="mini-linq.min.js"></script>
 ```
@@ -11,6 +11,8 @@ You also may use it in your Node.JS project by using
 ```javascript
 require('mini-linq.min.js');
 ```
+You can also attach and use mini-linq with [knockout observableArray](http://knockoutjs.com/documentation/observableArrays.html). Just link `mini-linq.knockout.js`.
+Also you may use postponed [lazy-execution for arrays](#lazyArrays) by linking `mini-linq.lazy.js`.
 
 ## Available methods
 * [any](#any)
@@ -338,8 +340,21 @@ Array of taken elements.
 ```
 ---
 
+## <a name="lazyArrays">Lazy array</a>
+By default all mini-linq methods will execute their logic instantly and return result. But in some cases it may be useful to postpone execution, until some conditions take place.
+To do this with mini-linq it's necesasry to load `mini-linq.lazy.js` module. After that it will be possible to use `.toLazy()` to cast array to lazy array. `.toLazy()` doesn't accept any argument and returns `LazyArray` instance. `LazyArray` has the same mini-linq methods as normal array with the exception that some of them are not executing instantly. To get final result array you have to use `.toArray()` method. For example:
+```javascript
+[1, 2, 3, 4].toLazy(); // will return LazyArray instance
+[1, 2, 3, 4].toLazy().where(w => w > 2); // will return LazyArray instance, .where is postponed, nothing executed.
+[1, 2, 3, 4].toLazy().where(w => w > 2).toArray(); // will return [3, 4]
+```
+LazyArray has some optimization logic, to reduce amount of array traversals, for example:
+```javascript
+[1, 2, 3, 4].toLazy().where(w => w > 1).where(w => w < 4).toArray(); // will merge two .where methods into one, then execute and return [2, 3] (with just one traversal)
+```
+
 ## Author
-[Alexander Kopachov](https://www.linkedin.com/in/akopachov)
+[Alexander Kopachov](https://www.linkedin.com/in/akopachov) <alex.kopachov@gmail.com>
 
 ## License
 [MIT](https://raw.githubusercontent.com/akopachov/mini-linq-js/master/LICENSE)
