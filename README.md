@@ -354,7 +354,7 @@ LazyArray has some optimization logic, to reduce amount of array traversals, for
 ```
 
 ## Author
-[Alexander Kopachov](https://www.linkedin.com/in/akopachov) <alex.kopachov@gmail.com>
+[Alexander Kopachov](https://www.linkedin.com/in/akopachov) (alex.kopachov@gmail.com)
 
 ## License
 [MIT](https://raw.githubusercontent.com/akopachov/mini-linq-js/master/LICENSE)
