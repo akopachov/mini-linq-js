@@ -2,7 +2,7 @@
 ## Description
 LINQ for JavaScript library, which allows to work with arrays in a more easy way and focus on business logic.
 
-## Usage:
+## Usage
 Just link mini-linq.js or mini-linq.min.js in your html.
 ```html
 <script type="text/javascript" src="mini-linq.min.js"></script>
@@ -12,7 +12,7 @@ You also may use it in your Node.JS project by using
 require('mini-linq.min.js');
 ```
 
-## Available methods:
+## Available methods
 * [any](#any)
 * [all](#all)
 * [where](#where)
@@ -33,7 +33,7 @@ require('mini-linq.min.js');
 * [skip](#skip)
 * [take](#take)
 
-## Terms:
+## Terms
 * <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic conditions; `false` otherwise;
 * <a name="selector">**Selector**</a> - function which accepts arguments (value, index, array) and returns some value which should be used instead of original value.
 * <a name="comparator">**Comparator**</a> - function which accepts two arguments and returns `true` if two arguments are equal and `false` otherwise.
@@ -46,7 +46,7 @@ require('mini-linq.min.js');
 3. modern way with obsolete browsers support: `'arg => arg * 2'`. It's almost the same as in p.2, just wrapped as a string. _mini-linq_ core will parse this string and generated appropriate function. _**Important!** It's not possible to use closure variables using this way._
 
 
-## Methods description:
+## Methods description
 
 ### <a name="any">.any</a>
 ###### Description:
@@ -337,3 +337,9 @@ Array of taken elements.
 [1, 2, 3, 4].take(9); // will return [1, 2, 3, 4]
 ```
 ---
+
+## Author
+[Alexander Kopachov](https://www.linkedin.com/in/akopachov)
+
+## License
+[MIT](https://raw.githubusercontent.com/akopachov/mini-linq-js/master/LICENSE)
