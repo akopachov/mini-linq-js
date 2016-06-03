@@ -108,6 +108,10 @@ SOFTWARE.
                 } else if (typeof (predicate) !== "function") {
                     return this.length > 0;
                 }
+                
+                if (typeof(Array.prototype.some) === 'function') {
+                    return this.some(predicate);
+                }
 
                 for (var i = 0, l = this.length; i < l; i++) {
                     if (predicate(this[i], i, this)) {
@@ -123,6 +127,10 @@ SOFTWARE.
                     predicate = LINQ.utils.parseExpression(predicate);
                 } else if (typeof (predicate) !== "function") {
                     throw new Error('Predicate is required');
+                }
+                
+                if (typeof(Array.prototype.every) === 'function') {
+                    return this.every(predicate);
                 }
 
                 var oppositePredicate = function () {
@@ -297,6 +305,10 @@ SOFTWARE.
                 } else if (typeof (predicate) !== "function") {
                     predicate = function () { return true; }
                 }
+                
+                if (typeof(Array.prototype.find) === 'function') {
+                    return this.find(predicate) || null;
+                }
 
                 for (var i = 0, l = this.length; i < l; i++) {
                     if (predicate(this[i], i, this)) {
@@ -450,6 +462,16 @@ SOFTWARE.
                 }
                 
                 return this.slice(0, count);
+            },
+            
+            ofType: function(type) {
+                if (typeof(type) !== 'string') {
+                    throw new TypeError("Type is required.");
+                }
+                
+                return LINQ.methods.where.apply(this, [function(item) {
+                    return typeof(item) === type;
+                }]);
             }
         }
     };

@@ -34,6 +34,7 @@ Also you may use postponed [lazy-execution for arrays](#lazyArrays) by linking `
 * [max](#max)
 * [skip](#skip)
 * [take](#take)
+* [ofType](#ofType)
 
 ## Terms
 * <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic conditions; `false` otherwise;
@@ -337,6 +338,21 @@ Array of taken elements.
 [1, 2, 3, 4].take(2); // will return [1, 2]
 [1, 2, 3, 4].take(0); // will return []
 [1, 2, 3, 4].take(9); // will return [1, 2, 3, 4]
+```
+---
+
+### <a name="ofType">.ofType</a>
+###### Description:
+`.ofType` filter elements based on specified type. Basically it's a shortcut for `.where(w => typeof(w) === specifiedType)`.
+###### Arguments:
+`.ofType` accepts the type to filter the elements on.
+###### Returns:
+Array of elements of specified type.
+###### Example of usage:
+```javascript
+[1, '2', '3', 4].ofType('string'); // will return ['2', '3']
+[1, '2', '3', 4].ofType('number'); // will return [1, 4]
+[1, '2', '3', 4].ofType('object'); // will return [];
 ```
 ---
 

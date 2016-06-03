@@ -27,8 +27,8 @@ describe('Lazy array', function() {
        var result4 = testArray1.toLazy().where('w => w > 1').where('w => w < 1').where('w => w > 3').optimize().toArray();
        test.array(result3).is(result4);
        
-       var result5 = testArray1.where(w => w > 1).where('w => w > 2').where(w => w > 3).select(s => s + 1).select('s => s + 5').select(s => s + 1);
-       var result6 = testArray1.toLazy().where('w => w > 1').where(w => w > 2).where(w => w > 3).select(s => s + 1).select('s => s + 5').select(s => s + 1).optimize().toArray();
+       var result5 = testArray1.where(function(w) {return w > 1;}).where('w => w > 2').where(function(w) {return w > 3;}).select(function(s) {return s + 1;}).select('s => s + 5').select(function(s) {return s + 1;});
+       var result6 = testArray1.toLazy().where('w => w > 1').where(function(w) {return w > 2;}).where(function(w) {return w > 3;}).select(function(s) {return s + 1;}).select('s => s + 5').select(function(s) {return s + 1;}).optimize().toArray();
        test.array(result5).is(result6);
        
        test.array(testArray1.toLazy().orderBy('o => o').orderBy().orderByDescending().optimize().toArray()).is(testArray1.orderByDescending());

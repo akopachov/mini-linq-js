@@ -182,7 +182,7 @@ describe('Methods', function() {
         test.value(testArray1.contains(999)).isFalse();
         test.value(testArray1.contains('2')).isFalse(); // === by default is in use.
         test.value(testArray1.contains('2', '(a, b) => a == b')).isTrue(); // force == to use
-        test.value([1, 2, 3, 4].contains('2', (a, b) => a == b)).isTrue();
+        test.value([1, 2, 3, 4].contains('2', function(a, b) { return a == b;})).isTrue();
     });
     
     it('.groupBy', function() {
@@ -265,5 +265,12 @@ describe('Methods', function() {
         test.array([1, 2, 3, 4].take(2)).is([1, 2]);
         test.array([1, 2, 3, 4].take(0)).is([]);
         test.array([1, 2, 3, 4].take(9)).is([1, 2, 3, 4]);
+    });
+    
+    it('.ofType', function() {
+        test.array([1, '2', '3', 4].ofType('string')).is(['2', '3']);
+        test.array([1, '2', '3', 4].ofType('number')).is([1, 4]);
+        test.array([1, '2', '3', 4].ofType('object')).is([]);
+        test.array([].ofType('object')).is([]);
     });
 });
