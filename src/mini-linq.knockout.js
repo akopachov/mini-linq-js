@@ -1,3 +1,4 @@
+/* ! https://github.com/akopachov/mini-linq-js */
 /* !
 The MIT License (MIT)
 

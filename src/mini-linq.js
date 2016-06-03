@@ -1,4 +1,5 @@
-﻿/* !
+﻿/* ! https://github.com/akopachov/mini-linq-js */
+/* !
 The MIT License (MIT)
 
 Copyright (c) 2016 Alexander Kopachov <alex.kopachov@gmail.com> (https://www.linkedin.com/in/akopachov)
