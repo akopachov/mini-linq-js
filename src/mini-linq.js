@@ -23,6 +23,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 (function () {
+    var stringTrim = function(str) {
+        if (typeof(str) !== 'string' || str === null) {
+            return str;
+        }
+
+        if (!String.prototype.trim) {
+            return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+        }
+
+        return str.trim();
+    };
     var expressionCache = {};
     LINQ = {
         utils: {
@@ -40,8 +51,8 @@ SOFTWARE.
                 }
 
                 var parts = expression.split('=>');
-                var args = parts[0].trim().replace(/[\(\)\s]/gi, '');
-                var body = parts[1].trim();
+                var args = stringTrim(parts[0]).replace(/[\(\)\s]/gi, '');
+                var body = stringTrim(parts[1]);
                 var expressionFn;
 
                 try {
