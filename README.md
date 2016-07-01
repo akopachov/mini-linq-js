@@ -19,6 +19,7 @@ Also you may use postponed [lazy-execution for arrays](#lazyArrays) by linking `
 * [all](#all)
 * [where](#where)
 * [select](#select)
+* [selectMany](#selectMany)
 * [count](#count)
 * [orderBy](#orderBy)
 * [orderByDescending](#orderByDescending)
@@ -35,6 +36,7 @@ Also you may use postponed [lazy-execution for arrays](#lazyArrays) by linking `
 * [skip](#skip)
 * [take](#take)
 * [ofType](#ofType)
+* [union](#union)
 
 ## Terms
 * <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic conditions; `false` otherwise;
@@ -106,6 +108,24 @@ Array of elements produced by applying [selector](#selector). Or empty array if 
 ```javascript
 [1, 2, 3, 4].select(s => s * 10); // will return [10, 20, 30, 40]
 [].select(a => a * 10); // will return [] (empty array)
+```
+---
+
+### <a name="selectMany">.selectMany</a>
+###### Description:
+`.selectMany` produces new array by applying [selector](#selector) for each element and combining selected arrays together into one sngle array.
+###### Arguments:
+`.selectMany` accepts [selector](#selector).
+###### Returns:
+Array of elements produced by applying [selector](#selector). Or empty array if there are no elements.
+###### Example of usage:
+```javascript
+var testArray = [
+    { x: [1, 2], y: 0 }, 
+    { x: [3, 4], y: 1 }, 
+    { x: [5, 6], y: 2 }];
+testArray.selectMany(sm => sm.x); // will return [1, 2, 3, 4, 5, 6]
+testArray.selectMany(sm => sm.y); // will return [] because 'y' fields are not arrays
 ```
 ---
 
@@ -353,6 +373,21 @@ Array of elements of specified type.
 [1, '2', '3', 4].ofType('string'); // will return ['2', '3']
 [1, '2', '3', 4].ofType('number'); // will return [1, 4]
 [1, '2', '3', 4].ofType('object'); // will return [];
+```
+---
+
+### <a name="union">.union</a>
+###### Description:
+`.union` combines two arrays together into single array.
+###### Arguments:
+`.union` accepts array to combine.
+###### Returns:
+Array of elemnts from source arrays.
+###### Example of usage:
+```javascript
+[1, 2, 3, 4].union([2, 3, 4, 5]); // will return [1, 2, 3, 4, 2, 3, 4, 5]
+[1, 2, 3, 4].union([]); // will return [1, 2, 3, 4]
+[].union([]); // will return []
 ```
 ---
 

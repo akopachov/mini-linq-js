@@ -51,6 +51,16 @@ describe('Core', function() {
                 return emptyArray[key] === it;
             });
     });
+
+    it('isArray method', function() {
+        test.value(LINQ.utils.isArray([])).isTrue();
+        test.value(LINQ.utils.isArray([1, '2', true, false, {}, null])).isTrue();
+        test.value(LINQ.utils.isArray([false])).isTrue();
+        test.value(LINQ.utils.isArray(true)).isFalse();
+        test.value(LINQ.utils.isArray({})).isFalse();
+        test.value(LINQ.utils.isArray('test')).isFalse();
+        test.value(LINQ.utils.isArray(null)).isFalse();
+    });
 });
 
 describe('Methods', function() {
@@ -272,5 +282,20 @@ describe('Methods', function() {
         test.array([1, '2', '3', 4].ofType('number')).is([1, 4]);
         test.array([1, '2', '3', 4].ofType('object')).is([]);
         test.array([].ofType('object')).is([]);
+    });
+
+    it('.union', function() {
+        test.array([1, 2, 3, 4].union([2, 3, 4, 5])).is([1, 2, 3, 4, 2, 3, 4, 5]);
+        test.array([1, 2, 3, 4].union([])).is([1, 2, 3, 4]);
+        test.array([].union([])).is([]);
+    });
+
+    it('.selectMany', function() {
+        var testArray2 = [
+            { x: [1, 2], y: 0 }, 
+            { x: [3, 4], y: 1 }, 
+            { x: [5, 6], y: 2 }];
+        test.array(testArray2.selectMany('sm => sm.x')).is([1, 2, 3, 4, 5, 6]);
+        test.array(testArray2.selectMany('sm => sm.y')).is([]);
     });
 });

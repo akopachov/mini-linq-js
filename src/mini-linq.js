@@ -111,6 +111,14 @@ SOFTWARE.
 
                 // Constructor not found, return new object
                 } catch (e) { return {}; }
+            },
+
+            isArray: function(arg) {
+                if (Array.isArray) {
+                    return Array.isArray(arg);
+                }
+
+                return Object.prototype.toString.call(arg) === '[object Array]';
             }
         },
         methods: {
@@ -187,6 +195,28 @@ SOFTWARE.
                 var result = [];
                 for (var i = 0, l = this.length; i < l; i++) {
                     result.push(selector(this[i], i, this));
+                }
+                
+                return result;
+            },
+
+            selectMany: function(selector) {
+                if (typeof (selector) === "string") {
+                    selector = LINQ.utils.parseExpression(selector);
+                } else if (typeof (selector) !== "function") {
+                    throw new Error('Selector is required');
+                }
+
+                var result = [];
+                for (var i = 0, l = this.length; i < l; i++) {
+                    var subArray = selector(this[i], i, this);
+                    if (!LINQ.utils.isArray(subArray)) {
+                        continue;
+                    }
+                    
+                    for (var j = 0, jl = subArray.length; j < jl; j++) {
+                        result.push(subArray[j]);
+                    }
                 }
 
                 return result;
@@ -484,6 +514,10 @@ SOFTWARE.
                 return LINQ.methods.where.apply(this, [function(item) {
                     return typeof(item) === type;
                 }]);
+            },
+
+            union: function(anotherCollection) {
+                return this.concat(anotherCollection);
             }
         }
     };
