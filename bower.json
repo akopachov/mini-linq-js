@@ -1,0 +1,14 @@
+{
+  "name": "mini-linq-js",
+  "description": "LINQ for JavaScript library, which allows to work with arrays in a more easy way and focus on business logic.",
+  "main": "dist/mini-linq.full.min.js",
+  "authors": [
+    "Alex Kopachov"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "linq",
+    "array"
+  ],
+  "homepage": "https://github.com/akopachov/mini-linq-js"
+}
