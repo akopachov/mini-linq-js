@@ -2,6 +2,12 @@
 ## Description
 LINQ for JavaScript library, which allows to work with arrays in a more easy way and focus on business logic.
 
+## Installation
+Download and link manually. Or install it via Bower
+```
+bower install mini-linq-js --save
+```
+
 ## Usage
 Just link `mini-linq.js` or `mini-linq.min.js` in your html.
 ```html
