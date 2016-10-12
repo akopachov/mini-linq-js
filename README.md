@@ -16,7 +16,7 @@ Just link `mini-linq.js` or `mini-linq.min.js` in your html.
 ```
 You also may use it in your Node.JS project by using
 ```javascript
-require('mini-linq.min.js');
+require('mini-linq-js');
 ```
 You can also attach and use mini-linq with [knockout observableArray](http://knockoutjs.com/documentation/observableArrays.html). Just link `mini-linq.knockout.js`.
 Also you may use postponed [lazy-execution for arrays](#lazyArrays) by linking `mini-linq.lazy.js`.
