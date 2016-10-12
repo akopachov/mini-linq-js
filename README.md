@@ -3,9 +3,10 @@
 LINQ for JavaScript library, which allows to work with arrays in a more easy way and focus on business logic.
 
 ## Installation
-Download and link manually. Or install it via Bower
+Download and link manually. Or install it
 ```
 bower install mini-linq-js --save
+npm install mini-linq-js --save
 ```
 
 ## Usage
