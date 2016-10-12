@@ -3,9 +3,10 @@
 LINQ for JavaScript library, which allows to work with arrays in a more easy way and focus on business logic.
 
 ## Installation
-Download and link manually. Or install it via Bower
+Download and link manually. Or install it
 ```
 bower install mini-linq-js --save
+npm install mini-linq-js --save
 ```
 
 ## Usage
@@ -15,7 +16,7 @@ Just link `mini-linq.js` or `mini-linq.min.js` in your html.
 ```
 You also may use it in your Node.JS project by using
 ```javascript
-require('mini-linq.min.js');
+require('mini-linq-js');
 ```
 You can also attach and use mini-linq with [knockout observableArray](http://knockoutjs.com/documentation/observableArrays.html). Just link `mini-linq.knockout.js`.
 Also you may use postponed [lazy-execution for arrays](#lazyArrays) by linking `mini-linq.lazy.js`.
