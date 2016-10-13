@@ -14,12 +14,13 @@ Just link `mini-linq.js` or `mini-linq.min.js` in your html.
 ```html
 <script type="text/javascript" src="mini-linq.min.js"></script>
 ```
+You can also attach and use mini-linq with [knockout observableArray](http://knockoutjs.com/documentation/observableArrays.html). Just link `mini-linq.knockout.js`.
+Also you may use postponed [lazy-execution for arrays](#lazyArrays) by linking `mini-linq.lazy.js`.
+
 You also may use it in your Node.JS project by using
 ```javascript
 require('mini-linq-js');
 ```
-You can also attach and use mini-linq with [knockout observableArray](http://knockoutjs.com/documentation/observableArrays.html). Just link `mini-linq.knockout.js`.
-Also you may use postponed [lazy-execution for arrays](#lazyArrays) by linking `mini-linq.lazy.js`.
 
 ## Available methods
 * [any](#any)
@@ -120,7 +121,7 @@ Array of elements produced by applying [selector](#selector). Or empty array if 
 
 ### <a name="selectMany">.selectMany</a>
 ###### Description:
-`.selectMany` produces new array by applying [selector](#selector) for each element and combining selected arrays together into one sngle array.
+`.selectMany` produces new array by applying [selector](#selector) for each element and combining selected arrays together into one single array.
 ###### Arguments:
 `.selectMany` accepts [selector](#selector).
 ###### Returns:
