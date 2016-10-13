@@ -1,6 +1,6 @@
 {
   "name": "mini-linq-js",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "LINQ for JavaScript library, which allows to work with arrays in a more easy way and focus on business logic.",
   "main": "dist/mini-linq.full.min.js",
   "authors": [

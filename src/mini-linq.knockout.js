@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 (function(LINQ) {
-    if (!ko || !ko.observableArray || !ko.observableArray.fn) {
+    if (typeof(ko) == 'undefined' || !ko.observableArray || !ko.observableArray.fn) {
         return;
     }
     
