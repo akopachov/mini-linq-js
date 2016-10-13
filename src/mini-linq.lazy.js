@@ -135,7 +135,7 @@ SOFTWARE.
             }
             
             applyModificators();
-            return Array.isArray(_array) ? _array.slice(0) : _array;
+            return LINQ.utils.isArray(_array) ? _array.slice(0) : _array;
         };
     };
     
