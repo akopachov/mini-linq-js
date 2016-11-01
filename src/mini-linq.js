@@ -207,19 +207,17 @@ SOFTWARE.
                     throw new Error('Selector is required');
                 }
 
-                var result = [];
+                var results = [];
                 for (var i = 0, l = this.length; i < l; i++) {
                     var subArray = selector(this[i], i, this);
                     if (!LINQ.utils.isArray(subArray)) {
                         continue;
                     }
                     
-                    for (var j = 0, jl = subArray.length; j < jl; j++) {
-                        result.push(subArray[j]);
-                    }
+                    results.push(subArray);
                 }
 
-                return result;
+                return Array.prototype.concat.apply([], results);
             },
 
             count: function (predicate) {
@@ -404,13 +402,51 @@ SOFTWARE.
 
                 var result = [];
                 for (var i = 0, outerLength = this.length; i < outerLength; i++) {
+                    var outerKey = outerKeySelector(this[i], i, this);
                     for (var j = 0, innerLength = innerArray.length; j < innerLength; j++) {
-                        var outerKey = outerKeySelector(this[i], i, this);
                         var innerKey = innerKeySelector(innerArray[j], j, innerArray);
                         if (keyComparator(innerKey, outerKey)) {
                             result.push(resultSelector(innerArray[j], this[i]));
                         }
                     }
+                }
+
+                return result;
+            },
+
+            groupJoinWith: function(innerArray, innerKeySelector, outerKeySelector, resultSelector, keyComparator) {
+                if (typeof (innerKeySelector) === "string") {
+                    innerKeySelector = LINQ.utils.parseExpression(innerKeySelector);
+                } else if (typeof (innerKeySelector) !== "function") {
+                    throw new Error("Inner key selector is required");
+                }
+
+                if (typeof (outerKeySelector) === "string") {
+                    outerKeySelector = LINQ.utils.parseExpression(outerKeySelector);
+                } else if (typeof (outerKeySelector) !== "function") {
+                    throw new Error("Outer key selector is required");
+                }
+
+                if (typeof (resultSelector) === "string") {
+                    resultSelector = LINQ.utils.parseExpression(resultSelector);
+                } else if (typeof (resultSelector) !== "function") {
+                    throw new Error("Results selector is required");
+                }
+
+                if (typeof (keyComparator) === "string") {
+                    keyComparator = LINQ.utils.parseExpression(keyComparator);
+                } else if (typeof (keyComparator) !== "function") {
+                    keyComparator = function(a, b) { return a === b; }
+                }
+
+                var result = [];
+                for (var i = 0, outerLength = this.length; i < outerLength; i++) {
+                    var outerKey = outerKeySelector(this[i], i, this);
+                    var joinGroup = LINQ.methods.where.apply(innerArray, [function(innerElement, j) {
+                        innerKey = innerKeySelector(innerArray[j], j, innerArray);
+                        return keyComparator(innerKey, outerKey);
+                    }]);
+                    result.push(resultSelector(joinGroup, this[i]));
                 }
 
                 return result;

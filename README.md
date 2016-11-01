@@ -36,6 +36,7 @@ require('mini-linq-js');
 * [firstOrDefault](#firstOrDefault)
 * [lastOrDefault](#lastOrDefault)
 * [joinWith](#joinWith)
+* [groupJoinWith](#groupJoinWith)
 * [contains](#contains)
 * [aggregate](#aggregate)
 * [sum](#sum)
@@ -259,6 +260,28 @@ Array of combined elements.
 [1, 2, 3].joinWith([4, 5, 6], ik => true, ok => true, (i, o) => '' + i + o); // will return ["41", "51", "61", "42", "52", "62", "43", "53", "63"]
 [1, 2, 3].joinWith([1, 2, 3], ik => ik + 1, ok => ok, (i, o) => i); // will return [1, 2]
 [1, 2, 3].joinWith([4, 5, 6], ik => ik, ok => ok, (i, o) => i) // will return []
+```
+---
+
+### <a name="groupJoinWith">.groupJoinWith</a>
+###### Description:
+`.groupJoinWith` correlates the elements of two arrays based on equality of keys and groups the results.
+###### Arguments:
+`.groupJoinWith` accepts following arguments (1-4 are mandatory, 5-th is optional):
+
+1. inner array to join with;
+2. inner key [selector](#selector) which will be applied to inner array elements;
+3. outer key [selector](#selector) which will be applied to outer array elements;
+4. result [selector](#selector) which should accept two arguments (array of matched inner element and outer element) and return result element;
+5. key [comparator](#comparator) which implements comparation logic between inner key and outer key. (optional)
+
+###### Returns:
+Array of combined elements.
+###### Example of usage:
+```javascript
+[1, 2, 3, 4].groupJoinWith([1, 2, 3, 1, 2, 3], 'ik => ik', 'ok => ok', '(g, o) => g'); // will return [[1, 1], [2, 2], [3, 3], []]
+[1, 2, 3, 4].groupJoinWith([], 'ik => ik', 'ok => ok', '(g, o) => o'); // will return [1, 2, 3, 4]
+[].groupJoinWith([1, 2, 3, 1, 2, 3], 'ik => ik', 'ok => ok', '(g, o) => g'); // will return []
 ```
 ---
 

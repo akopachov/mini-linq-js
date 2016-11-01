@@ -298,4 +298,20 @@ describe('Methods', function() {
         test.array(testArray2.selectMany('sm => sm.x')).is([1, 2, 3, 4, 5, 6]);
         test.array(testArray2.selectMany('sm => sm.y')).is([]);
     });
+    it('.groupJoinWith', function() {
+        test.array([1, 2, 3, 4].groupJoinWith([1, 2, 3, 1, 2, 3], 'ik => ik', 'ok => ok', '(g, o) => g'))
+            .isNotEmpty()
+            .is([[1, 1], [2, 2], [3, 3], []]);
+
+        test.array([].groupJoinWith([1, 2, 3, 1, 2, 3], 'ik => ik', 'ok => ok', '(g, o) => g'))
+            .isEmpty();
+
+        test.array([1, 2, 3, 4].groupJoinWith([], 'ik => ik', 'ok => ok', '(g, o) => g'))
+            .isNotEmpty()
+            .is([[], [], [], []]);
+
+        test.array([1, 2, 3, 4].groupJoinWith([], 'ik => ik', 'ok => ok', '(g, o) => o'))
+            .isNotEmpty()
+            .is([1, 2, 3, 4]);
+    });
 });
