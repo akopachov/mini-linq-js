@@ -319,20 +319,39 @@ SOFTWARE.
                 return result;
             },
 
-            distinct: function (selector) {
+            distinct: function (selector, comparator) {
                 if (typeof (selector) === "string") {
                     selector = LINQ.utils.parseExpression(selector);
                 } else if (typeof (selector) !== "function") {
                     selector = function (a) { return a; }
                 }
 
-                var uniqueMap = {};
+                if (typeof (comparator) === "string") {
+                    comparator = LINQ.utils.parseExpression(comparator);
+                } else if (typeof(comparator) !== 'function') {
+                    comparator = function(a, b) { return a === b; }
+                }
+
                 var unique = [];
+                var uniqueMap = {};
                 for (var i = 0, l = this.length; i < l; i++) {
                     var key = selector(this[i], i, this);
                     if (!uniqueMap[key]) {
-                        uniqueMap[key] = true;
+                        uniqueMap[key] = [key];
                         unique.push(this[i]);
+                    } else {
+                        var isUnique = true;
+                        for (var j = 0, jl = uniqueMap[key].length; j < jl; j++) {
+                            if (comparator(uniqueMap[key][j], key)) {
+                                isUnique = false;
+                                break;
+                            }
+                        }
+
+                        if (isUnique) {
+                            unique.push(this[i]);
+                            uniqueMap[key].push(key);
+                        }
                     }
                 }
 
@@ -552,8 +571,55 @@ SOFTWARE.
                 }]);
             },
 
-            union: function(anotherCollection) {
-                return this.concat(anotherCollection);
+            union: function(anotherCollection, comparator) {
+                if (typeof (comparator) === "string") {
+                    comparator = LINQ.utils.parseExpression(comparator);
+                } else if (typeof (comparator) !== "function") {
+                    comparator = function (a, b) { return a === b; }
+                }
+
+                var result = [];
+                var allValues = [].concat(this, anotherCollection);
+                for (var i = 0, l = allValues.length; i < l; i++) {
+                    var addToResult = true;
+                    for (var j = 0, rl = result.length; j < rl; j++) {
+                        if (comparator(allValues[i], result[j])) {
+                            addToResult = false;
+                            break;
+                        }
+                    }
+
+                    if (addToResult) {
+                        result.push(allValues[i]);
+                    }
+                }
+
+                return result;
+            },
+
+            except: function(anotherCollection, comparator) {
+                if (typeof (comparator) === "string") {
+                    comparator = LINQ.utils.parseExpression(comparator);
+                } else if (typeof (comparator) !== "function") {
+                    comparator = function (a, b) { return a === b; }
+                }
+
+                var result = [];
+                for (var i = 0, l = this.length; i < l; i++) {
+                    var addToResult = true;
+                    for (var j = 0, rl = anotherCollection.length; j < rl; j++) {
+                        if (comparator(this[i], anotherCollection[j])) {
+                            addToResult = false;
+                            break;
+                        }
+                    }
+
+                    if (addToResult) {
+                        result.push(this[i]);
+                    }
+                }
+
+                return result;
             }
         }
     };

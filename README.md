@@ -46,6 +46,7 @@ require('mini-linq-js');
 * [take](#take)
 * [ofType](#ofType)
 * [union](#union)
+* [except](#except)
 
 ## Terms
 * <a name="predicate">**Predicate**</a> - function which accepts arguments (value, index, array) and returns: `true` if arguments matches specified business-logic conditions; `false` otherwise;
@@ -196,15 +197,17 @@ Array of grouped elements.
 
 ### <a name="distinct">.distinct</a>
 ###### Description:
-`.distinct` selects distinct elements by using [selector](#selector) as a key or element if [selector](#selector) is not specified.
+`.distinct` selects distinct elements by using [selector](#selector) as a key or element if [selector](#selector) is not specified, and [comparator](#comparator) (optional) to compare equality of keys
 ###### Arguments:
-`.distinct` may accept [selector](#selector).
+`.distinct` may accept [selector](#selector) as a first argument and [comparator](#comparator) as a second argument.
 ###### Returns:
 Array of distinct elements.
 ###### Example of usage:
 ```javascript
 [2, 1, 2, 3, 1, 6, 7, 3, 2].distinct(); // will return [2, 1, 3, 6, 7]
-[2, 1, 2, 3, 1, 6, 7, 3, 2].distinct(d => d % 3) // will return [2, 1, 3]
+[2, 1, 2, 3, 1, 6, 7, 3, 2].distinct(d => d % 3); // will return [2, 1, 3]
+[1, 2, '2', '3', 3, 4, 5, 8, 5].distinct(); // will return [1, 2, '2', '3', 3, 4, 5, 8] (default comparator is "a === b";
+[1, 2, '2', '3', 3, 4, 5, 8, 5].distinct('x => x', '(a, b) => a == b'); // will return [1, 2, '3', 4, 5, 8] (here we used custom comparator)
 ```
 ---
 
@@ -409,16 +412,33 @@ Array of elements of specified type.
 
 ### <a name="union">.union</a>
 ###### Description:
-`.union` combines two arrays together into single array.
+`.union` produces the set union of arrays by using the [comparator](#comparator) (optional) to compare values.
 ###### Arguments:
-`.union` accepts array to combine.
+`.union` accepts array to combine and may accept [comparator](#comparator) as a second argument.
 ###### Returns:
-Array of elemnts from source arrays.
+Array of merged elements from source arrays.
 ###### Example of usage:
 ```javascript
-[1, 2, 3, 4].union([2, 3, 4, 5]); // will return [1, 2, 3, 4, 2, 3, 4, 5]
+[1, 2, 3, 4].union([2, 3, 4, 5]); // will return [1, 2, 3, 4, 5]
 [1, 2, 3, 4].union([]); // will return [1, 2, 3, 4]
 [].union([]); // will return []
+[1, 2, 3, 4].union([2, '3', '4', 5], '(a, b) => a == b'); // will return [1, 2, 3, 4, 5];
+```
+---
+
+### <a name="except">.except</a>
+###### Description:
+`.except` produces the set difference of two arrays by using the [comparator](#comparator) (optional) to compare values.
+###### Arguments:
+`.except` accepts array to compare and may accept [comparator](#comparator) as a second argument.
+###### Returns:
+Array of differences of source arrays.
+###### Example of usage:
+```javascript
+[1, 2, 3, 4].except([3, 4, 5]); // will return [1, 2]
+[1, 2, 3, 4].except([5, 6, 7]); // will return [1, 2, 3, 4]
+[1, 2, 3, 4].except([1, 2, 3, 4]); // will return []
+[1, 2, 3, 4].except(['3', 4, '5'], '(a, b) => a == b'); // will return [1, 2]
 ```
 ---
 

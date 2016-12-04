@@ -173,6 +173,8 @@ describe('Methods', function() {
 
                 return distinctElements[it] = true;
             });
+        test.array([1, 2, '2', '3', 3, 4, 5, 8, 5].distinct()).is([1, 2, '2', '3', 3, 4, 5, 8]);
+        test.array([1, 2, '2', '3', 3, 4, 5, 8, 5].distinct('x => x', '(a, b) => a == b')).is([1, 2, '3', 4, 5, 8]);
     });
     
     it('.firstOrDefault', function() {
@@ -285,9 +287,18 @@ describe('Methods', function() {
     });
 
     it('.union', function() {
-        test.array([1, 2, 3, 4].union([2, 3, 4, 5])).is([1, 2, 3, 4, 2, 3, 4, 5]);
+        test.array([1, 2, 3, 4].union([2, 3, 4, 5])).is([1, 2, 3, 4, 5]);
+        test.array([1, 2, 3, 4].union([5, 6, 7, 8])).is([1, 2, 3, 4, 5, 6, 7, 8]);
         test.array([1, 2, 3, 4].union([])).is([1, 2, 3, 4]);
         test.array([].union([])).is([]);
+        test.array([1, 2, 3, 4].union([2, '3', '4', 5], '(a, b) => a == b')).is([1, 2, 3, 4, 5]);
+    });
+
+    it('.except', function() {
+        test.array([1, 2, 3, 4].except([3, 4, 5])).is([1, 2]);
+        test.array([1, 2, 3, 4].except([5, 6, 7])).is([1, 2, 3, 4]);
+        test.array([1, 2, 3, 4].except([1, 2, 3, 4])).is([]);
+        test.array([1, 2, 3, 4].except(['3', 4, '5'], '(a, b) => a == b')).is([1, 2]);
     });
 
     it('.selectMany', function() {
