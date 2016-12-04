@@ -572,29 +572,7 @@ SOFTWARE.
             },
 
             union: function(anotherCollection, comparator) {
-                if (typeof (comparator) === "string") {
-                    comparator = LINQ.utils.parseExpression(comparator);
-                } else if (typeof (comparator) !== "function") {
-                    comparator = function (a, b) { return a === b; }
-                }
-
-                var result = [];
-                var allValues = [].concat(this, anotherCollection);
-                for (var i = 0, l = allValues.length; i < l; i++) {
-                    var addToResult = true;
-                    for (var j = 0, rl = result.length; j < rl; j++) {
-                        if (comparator(allValues[i], result[j])) {
-                            addToResult = false;
-                            break;
-                        }
-                    }
-
-                    if (addToResult) {
-                        result.push(allValues[i]);
-                    }
-                }
-
-                return result;
+                return [].concat(this, anotherCollection).distinct(function(e) {return e}, comparator);
             },
 
             except: function(anotherCollection, comparator) {
