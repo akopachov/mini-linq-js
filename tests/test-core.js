@@ -1,67 +1,11 @@
 if (typeof(require) !== 'undefined') {
-    require('../src/mini-linq.js');
+    require('../dist/mini-linq.min.js');
     var test = require('unit.js');
 } else {
     var test = unitjs;
 }
 
 var testArray1 = [1, 2, 8, 2, 6, 3, 9, 2, 4];
-
-describe('Core', function() {
-    it('Structure', function () {
-        test.object(LINQ)
-            .hasProperty('utils')
-            .hasProperty('methods');
-        test.object(LINQ.methods)
-            .isNotEmpty()
-            .matchEach(function(it, key) {
-                return typeof(it) === 'function';
-            });
-    });
-    
-    it('Expression parser - 1', function() {
-       var expression = function(x) { return x * x; }
-       var expressionParsed = LINQ.utils.parseExpression('x => x * x');
-       var testValue = Math.random() * 99;
-       test.value(expressionParsed).isFunction();
-       test.value(expressionParsed(testValue)).is(expression(testValue));
-    });
-    
-    it('Expression parser - 2', function() {
-       var expression = function(x) { return {x: x, xx: x * x}; }
-       var expressionParsed = LINQ.utils.parseExpression('x => {x : x, xx: x * x}');
-       var testValue = Math.random() * 99;
-       test.value(expressionParsed).isFunction();
-       test.object(expressionParsed(testValue)).is(expression(testValue));
-    });
-    
-    it('Expression parser - 3', function() {
-       var expression = function(x) { var y = 1; y++; return x + y; }
-       var expressionParsed = LINQ.utils.parseExpression('x => { var y = 1; y++; return x + y;}');
-       var testValue = Math.random() * 99;
-       test.value(expressionParsed).isFunction();
-       test.value(expressionParsed(testValue)).is(expression(testValue));
-    });
-    
-    it('Attachment to Array', function() {
-        var emptyArray = [];
-        test.object(LINQ.methods)
-            .isNotEmpty()
-            .matchEach(function(it, key) {
-                return emptyArray[key] === it;
-            });
-    });
-
-    it('isArray method', function() {
-        test.value(LINQ.utils.isArray([])).isTrue();
-        test.value(LINQ.utils.isArray([1, '2', true, false, {}, null])).isTrue();
-        test.value(LINQ.utils.isArray([false])).isTrue();
-        test.value(LINQ.utils.isArray(true)).isFalse();
-        test.value(LINQ.utils.isArray({})).isFalse();
-        test.value(LINQ.utils.isArray('test')).isFalse();
-        test.value(LINQ.utils.isArray(null)).isFalse();
-    });
-});
 
 describe('Methods', function() {
     it('.any', function() {

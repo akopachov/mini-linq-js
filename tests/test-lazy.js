@@ -1,6 +1,5 @@
 if (typeof(require) !== 'undefined') {
-    require('../src/mini-linq.js');
-    require('../src/mini-linq.lazy.js');
+    require('../dist/mini-linq.with-lazy.min.js');
     var test = require('unit.js');
 } else {
     var test = unitjs;

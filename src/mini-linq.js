@@ -35,7 +35,7 @@ SOFTWARE.
         return str.trim();
     };
     var expressionCache = {};
-    LINQ = {
+    var LINQ = {
         utils: {
             parseExpression: function (expression) {
                 if (typeof (expression) === "function") {
@@ -617,4 +617,6 @@ SOFTWARE.
             Array.prototype[key] = LINQ.methods[key];
         }
     }
+
+    /* ADDITIONAL_ATTACHMENTS */
 })();
